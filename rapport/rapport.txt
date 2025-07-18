@@ -1,0 +1,140 @@
+Rapport détaillé – Simulateur IA d’évaluation immobilière
+📌 1. Méthodologie adoptée
+L’objectif principal est de concevoir un modèle de régression supervisé permettant d’estimer le prix des appartements à partir de caractéristiques clés (surface, ville, équipements, etc.), adapté au marché marocain. La démarche suivie repose sur :
+
+Analyse exploratoire des données (EDA)
+
+Nettoyage et prétraitement des données
+
+Entraînement et évaluation de plusieurs modèles de régression
+
+Sélection du meilleur modèle
+
+Exportation du modèle final pour intégration web
+
+📊 2. Analyse exploratoire des données (EDA)
+Chargement des données : Importation via pandas.
+
+Dimensions : Taille du dataset vérifiée via df.shape.
+
+Types et structure : df.info() utilisé pour analyser les colonnes.
+
+Valeurs manquantes : Identification avec df.isnull().sum().
+
+Doublons : Suppression après détection (df.drop_duplicates()).
+
+Analyse des distributions :
+
+Visualisation des variables numériques avec des histogrammes (sns.histplot).
+
+Identification des tendances générales sur surface_area et price.
+
+Corrélations :
+
+Calcul d’une matrice de corrélation.
+
+Visualisation avec heatmap pour observer les variables liées au prix.
+
+Visualisation relationnelle :
+
+Scatterplot surface_area vs price pour constater leur relation positive.
+
+🛠️ 3. Prétraitement des données
+Nettoyage & transformation :
+
+Extraction des équipements en colonnes booléennes via str.get_dummies().
+
+Conversion de la colonne price en float après nettoyage des caractères non numériques.
+
+Suppression des colonnes inutiles : equipment, link, title.
+
+Traitement des villes :
+
+Conversion des noms des villes de l’arabe vers le français via un dictionnaire de correspondance.
+
+Remplacement des villes manquantes par "Unknown".
+
+Gestion des valeurs manquantes :
+
+Colonnes numériques : Imputation avec la médiane.
+
+Colonnes catégorielles : Remplacement par "Unknown".
+
+Détection et suppression des valeurs aberrantes :
+
+Prévu via analyse des colonnes clés comme price et surface_area.
+
+Méthodes suggérées : IQR, Z-score.
+
+Encodage des variables catégorielles :
+
+Label Encoding appliqué sur city_name.
+
+Mise à l’échelle :
+
+Prévu via StandardScaler ou MinMaxScaler (à confirmer selon les modèles).
+
+Sélection des variables explicatives :
+
+Variables numériques avec une corrélation > 0.15 conservées.
+
+Séparation des données :
+
+Variable cible : y = df["price"].
+
+Variables explicatives : X à partir des colonnes sélectionnées.
+
+Split 80% / 20% avec train_test_split.
+
+🤖 4. Modèles de régression testés
+Les modèles entraînés sont :
+
+Régression Linéaire
+
+Random Forest Regressor
+
+SVR (Support Vector Regressor)
+
+Gradient Boosting Regressor
+
+Chaque modèle est évalué selon :
+
+MSE (Mean Squared Error)
+
+RMSE (Root Mean Squared Error)
+
+MAE (Mean Absolute Error)
+
+R² Score
+
+Une validation croisée (Cross-Validation) est utilisée pour plus de robustesse.
+
+Les hyperparamètres des modèles sont optimisés avec :
+
+GridSearchCV ou RandomizedSearchCV
+
+🏆 5. Résultats & conclusion
+Le Random Forest Regressor et le Gradient Boosting obtiennent généralement de meilleurs résultats sur ce type de données, mais cela dépend des résultats finaux du notebook.
+
+Le meilleur modèle est sélectionné selon un R² élevé et un RMSE faible.
+
+Le modèle final est exporté dans un fichier model.pkl pour intégration dans l’application web.
+
+
+project/
+│
+├── data/
+│   └── appartements-data-db.csv
+│
+├── models/
+│   └── model.pkl               # Modèle final exporté
+│
+├── notebooks/
+│   └── project.ipynb           # Notebook principal (ce fichier)
+│
+├── scripts/
+│   └── preprocess.py           # (optionnel) Prétraitement sous forme de script
+│   └── train_model.py          # (optionnel) Entraînement sous forme de script
+│
+└── README.md                   # Instructions d’exécution
+
